@@ -1,0 +1,35 @@
+# ============================================================
+# ZWO 原厂固件与二进制 —— 绝不提交
+# 逆向分析和「再分发」是两回事，后者是明确的版权问题。
+# 见 README《法律边界》。
+# ============================================================
+firmware/
+extracted/
+dumps/
+*.img
+*.img.gz
+*.img.xz
+*.deb
+*.rknn
+*.mem
+*.elf
+zwoair_imager
+zwoair_guider
+zwoair_updater
+
+# 抓包与运行产物
+*.pcap
+*.pcapng
+*.jsonl
+logs/
+
+# 通用
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
