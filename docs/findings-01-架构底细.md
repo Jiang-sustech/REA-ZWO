@@ -89,7 +89,7 @@ ASIAIR **不是 ZWO 自研的嵌入式系统**，而是在成熟开源栈上叠�
 | 项 | 内容 | 强度 |
 |---|---|---|
 | 协议 | **明文 JSON / JSON-RPC，无加密**（Bill Nash 逆向确认「no encryption in ASIAIR」） | 强 |
-| 端口 | 4040 / 4360 / 4700，分别对应 guider / updater / imager | 中 |
+| 端口 | **已修正**：主控制 4700；另有 4800/4801/4900/4500/4400；OTA 4350/4360。详见 [`prior-art-前人工作综述.md`](prior-art-前人工作综述.md) | 强 |
 | 攻击面 | 存在**未保护的 JSON-RPC 端点**，可远程以 root 执行命令 → 社区 `run_jailbreak.py` 即基于此 | 强 |
 | 修复 | 该 jailbreak 在**固件 1.91 起失效** | 强 |
 | 抓包手段 | `tcpflow` 分析 App ↔ 设备流量 | 中 |

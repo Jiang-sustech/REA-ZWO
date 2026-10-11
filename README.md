@@ -19,7 +19,7 @@ ASIAIR **不是自研系统**，是三层拼装：
 | 二进制 | 设备 `/home/pi/ASIAIR/bin/`：`zwoair_imager`、`zwoair_guider`、`zwoair_updater`、`zwoair_daemon.sh`。C / C++，**未见 Go 痕迹** |
 | 内嵌开源 | FFmpeg **4.2.2-Kodi**、libyuv、OpenCV、IJKPlayer、SQLCipher / MMKV、TUTK P2P、RKNN 模型（nanotrack 目标跟踪） |
 | OS | 魔改 **Raspberry Pi OS / Raspbian**（Debian，32-bit armhf），自编 kernel 4.19.x |
-| 通信 | **明文 JSON-RPC，无加密**，端口 4040 / 4360 / 4700 |
+| 通信 | **明文换行分隔 JSON-RPC，无加密**。主控制 **4700**；另有 4800/4801/4900/4500/4400 侧通道；OTA 在 4350/4360 |
 | 手机 App | Android 原生 `com.zwoasi.asiair`，v3.0.0，约 1.17 GB |
 
 ### 硬件分三代，逆向路线完全不同
