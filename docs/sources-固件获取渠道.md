@@ -46,6 +46,29 @@ curl -L -o ASIAIR_OS_V1.2.zip \
 
 **找大小的方法**（决定下不下之前）：抓确认页的正文，里面有 `文件名 (N.NG)` 字样。
 
+**拿真实字节数**（Drive 页面显示的 "929M" 是 MiB，别拿它当字节数）：
+
+```bash
+curl -x http://127.0.0.1:10090 -r 0-0 -D - -o /dev/null \
+  "https://drive.usercontent.google.com/download?id=$ID&export=download&confirm=t&uuid=$uuid" \
+  | grep -i content-range     # → Content-Range: bytes 0-0/973791291
+```
+
+### 已下载文件的校验值（2026-10-11 实测）
+
+```
+文件        ASIAIR_OS_V1.2.zip
+字节        973,791,291
+sha256      a577bb4890a182596286265c6f891590e858a90819992c97550dd4326625117c
+内含        ASIAIR_OS_V1.2.img   32,010,928,128 字节（29.8 GiB）
+img 日期    2019-07-23
+```
+
+> ⚠️ **下载必须校验。** 本机 PATH 里的 `curl` 是 **Windows 自带 schannel 版**，下大文件会在中途
+> `curl: (56) schannel: server closed abruptly` 断掉，**而且 exit code 仍是 0**。
+> 第一次下载就在 86%（802,756,220 字节）断的，不校验根本发现不了。**改用 `/usr/bin/curl`（Git Bash 的 OpenSSL 版）**，断点续传用 `-C -`。
+> 判据是 `unzip -l` 能正常列出内容，不是 exit code。
+
 ---
 
 ## 二、`asiair_armhf.deb` 为什么拿不到
