@@ -78,6 +78,27 @@ curl -L -o ASIAIR_OS_V1.2.zip \
 - **BOOT 分区**：FAT，Windows/macOS 可直接读。含 `zwoair_license`（与芯片 ID 绑定的许可证，**分析时无用，也别弄丢**）和 `ASIAIR_Config.txt`。
 - **其余分区**：ext4，含完整 rootfs，**`/home/pi/ASIAIR/bin/zwoair_*` 在这里**。
 
-在 WSL2 里：`unzip` → `fdisk -l` 看分区偏移 → `mount -o loop,offset=...` 挂载目标分区 → 取二进制。
+### Windows 原生就能做完 —— **不需要 WSL2**
 
-**全程只读，不碰任何设备。**
+实测本机工具已齐全（2026-10-11 核实）：
+
+| 环节 | 工具 | 位置 |
+|---|---|---|
+| 解 zip | `unzip` | Git Bash |
+| **拆 ext4 分区** | **7-Zip 26.02**（格式表含 `Ext ext2 ext3 ext4 img`） | `C:\Program Files\7-Zip\` |
+| ELF 架构 / 动态依赖 | **`arm-none-eabi-readelf`**（binutils 2.44，ARM 专用） | `D:\STM32Toolchain\bin\` |
+| 反汇编 | `arm-none-eabi-objdump` | 同上 |
+| 字符串 | `arm-none-eabi-strings` | 同上 |
+| 通用兜底 | `file` / TDM-GCC 的 `readelf objdump nm` | Git Bash / `C:\TDM-GCC-64\bin` |
+
+7-Zip 还支持 `Ar` 格式（**含 `.deb`**）和 `ELF`——万一以后拿到 `asiair_armhf.deb`，同一个工具就能拆。
+
+```bash
+unzip ASIAIR_OS_V1.2.zip            # → .img
+7z l   ASIAIR_OS_V1.2.img           # 看分区表（GPT + FAT + Ext）
+7z x   ASIAIR_OS_V1.2.img -o out    # 提取，目标 home/pi/ASIAIR/bin/
+```
+
+**全程只读，不碰任何设备，零变砖风险。**
+
+> 注：曾误判为"正经分析要走 WSL2"。WSL 其实**根本没装**（需管理员 + 重启），但本机原生工具链已足够，不必安装。
