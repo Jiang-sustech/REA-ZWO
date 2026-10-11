@@ -30,6 +30,16 @@ ASIAIR **不是自研系统**，是三层拼装：
 | ASIAIR **Plus**（CM4，早期 32 GB） | USB-C + `rpiboot` 挂 eMMC（reset 键接 `nRPI_BOOT`） | 低 |
 | ASIAIR **Plus 256GB** / **Mini**（Rockchip RK3568B2 / RV1126） | maskrom + `rkdeveloptool` | **高**——ZWO 不提供任何官方镜像，进不了 maskrom 就是砖 |
 
+### 各代核心功能是否一样？—— 应用层共用，OS 层分叉
+
+| 层 | 跨代共用？ | 说明 |
+|---|---|---|
+| **应用层** | ✅ **全型号共用，单一 armhf** | 一套 `asiair_armhf.deb` + `indi-y_armhf.deb` + libgphoto2 喂所有机型；连 Seestar 都共用 |
+| **OS 层** | ❌ 按 SoC 分叉 | Pi 系（Pro、AA+ CM4）与 Rockchip 系（Mini、AA+ 256GB）两套底座 |
+
+**所以逆向目标锁定 `asiair_armhf.deb` 就对了，跟手上是哪台无关。**「型号决定路线」指的是*怎么把固件取出来*，不是分析对象。
+逐条证据见 [`docs/findings-02-跨代共性.md`](docs/findings-02-跨代共性.md)。
+
 ### 最低风险入口
 
 **先拆 `.deb`，不要先拆机器。** 官方更新包是 Debian 包 `asiair_armhf.deb`：
